@@ -25,10 +25,12 @@ const Home = () => {
 
 
     useEffect(() => {
+        console.log("Line 28!")
         const fetch  = async () => {
+            console.log("Line 30!")
             let {data}  = await axios.get("http://localhost:8000/products");
             setproducts(data);
-            console.log(data);
+            console.log(products,"Line 33!");
         }
         fetch();
     }, [])

@@ -97,7 +97,7 @@ export default function SellNFT() {
         return response.pinataURL;
       }
     } catch (e) {
-      console.log("error uploading JSON metadata:", e);
+      console.log("Error uploading JSON metadata:", e);
     }
   }
 

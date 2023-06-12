@@ -1,5 +1,3 @@
-
-
 import { Button, Divider, Box, Typography, styled } from '@mui/material';
 
 import Carousel from 'react-multi-carousel';
@@ -69,6 +67,10 @@ const RenderTimer = styled(Box)(({ theme }) => ({
         display: 'none'
     }
 }));
+
+function doit(){
+    
+}
       
 const MultiSlide = ({ data }) => {
     const timerURL = 'https://static-assets-web.flixcart.com/www/linchpin/fk-cp-zion/img/timer_a73398.svg';
@@ -87,7 +89,7 @@ const MultiSlide = ({ data }) => {
                                 <Countdown date={Date.now() + 5.04e+7} renderer={renderer} />
                         </Timer>
                 
-                <ViewAllButton variant="contained" color="primary">View All</ViewAllButton>
+                <ViewAllButton variant="contained" color="primary" onClick={doit}>View All</ViewAllButton>
             </Deal>
             <Divider />
             <Carousel
@@ -105,9 +107,10 @@ const MultiSlide = ({ data }) => {
                 dotListClass="custom-dot-list-style"
                 itemClass="carousel-item-padding-40-px"
             >
+            {/* {console.log(data.filter(temp => temp.tokenID?.length > 0).length)} */}
                 {
-                    data.filter(temp => temp.tokenID?.length > 0).map(temp => (
-                        temp.tokenID.length && (
+                    data.map(temp => (
+                        true && (
                         <Link to={`product/${temp._id}`} style={{textDecoration: 'none'}}>
                             <Box textAlign="center" style={{ padding: '25px 15px' }}>
                                 <Image src={temp.product_image} />

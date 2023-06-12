@@ -34,12 +34,14 @@ const RightContainer = styled(Grid)`
 
 const DetailView = () => {
     const { id } = useParams();
-    console.log(id)
+    console.log("Line Number: 37" , id)
     const [rep,setrep]=useState('');
     useEffect(()=>{
+        console.log("Line 40! DetailedView.jsx", id)
         const find  = async ()=>{
             let ans= await getProductById(id);
-           // console.log(ans)
+            ans.tokenID = ['1234567890'];
+           console.log("Line 42! DetailedView.jsx", ans)
             setrep(ans);
             // console.log(ans);
         }
@@ -58,8 +60,8 @@ const DetailView = () => {
     return (
         <Component>
             <Box></Box>
-            
-               { rep && <Container container> 
+            {console.log("Line 58! DetailedView.jsx", rep)}
+               { rep && <div>Hello World</div> && <Container container> 
                     <Grid item lg={4} md={4} sm={8} xs={12}>
                         <ActionItem product={{image:rep.product_image,id:rep.tokenID[0],expiry:rep.expiry,productID:rep.productID} }/>
                     </Grid>
