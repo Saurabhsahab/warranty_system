@@ -1,12 +1,10 @@
 import Product from '../model/productSchema.js';
-import Repairs from '../model/repairSchema.js';
 import sgMail from '@sendgrid/mail'
 
 
 const SENDGRID_API_KEY='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'
 
 sgMail.setApiKey(SENDGRID_API_KEY)
-
 export const getProducts = async (request, response) => {
     try {
         const products = await Product.find({});
@@ -28,17 +26,6 @@ export const getProductById = async (request, response) => {
          response.json(error);
     }
 }
-export const getRepairLog = async (request, response) => {
-    try {
-        console.log('Hie')
-        console.log(request.params.id )
-        const products = await Repairs.findOne({ tokenID: request.params.id });
-        //console.log(products)
-        response.json(products);
-    }catch (error) {
-         response.json(error);
-    }
-}
 
 export const postNFT = async (request, response) => {
     try {
@@ -49,12 +36,13 @@ export const postNFT = async (request, response) => {
         },{
             new:true
         }).then(da=>{
-            const repair=new Repairs({
-                tokenID:request.body.tokenID,
-                date:{},
-                discription:{}
-            })
-            repair.save();
+            if(da){
+                console.log(da)
+                response.json({message:"success"})
+            }
+            else{
+                response.json({error:"failed"})
+            }
         })
         
         }
@@ -67,7 +55,8 @@ export const postNFT = async (request, response) => {
 
 export const delNFT = async (request, response) => {
     try {
-        var date,reason;
+         console.log(request.body.productID)
+         console.log(request.body)
         const{productID,tokenID,email,url,nftname,nftdisc,serialno,time}=request.body;;
         Product.findOneAndUpdate({productID:productID},{
             $pull:{tokenID:tokenID}
@@ -75,9 +64,7 @@ export const delNFT = async (request, response) => {
             new:true
         }).then(da=>{
             if(da){
-                Repairs.findOne({tokenID:tokenID}).
-                then(res=>{
-                 
+                
 
 const msg = {
   to: email, // Change to your recipient
@@ -91,11 +78,10 @@ const msg = {
          Details of your nft :
          1. NFT Name: ${nftname}
          2. NFT discription :${nftdisc}
-         3. NFT Image : ${url}`
-         ,
+         3. NFT Image : ${url}`,
 }
 sgMail
-  .send(msg)})
+  .send(msg)
   .then(() => {
     console.log('Email sent')
   })
@@ -148,50 +134,6 @@ export const postProduct = async (request, response) => {
         })
         }
         
-    catch (error) {
-        response.json(error);
-    }
-}
-
-export const repairTokenID = async (request, response) => {
-    try {
-       const {tokenID,date}=request.body;
-       const data=date.toString().slice(0,15)
-       Repairs.findOneAndUpdate({tokenID:tokenID},{
-         $push:{repair_date:data},
-    },{
-        new:true
-    })
-        
-    .then(da=>{
-            if(da){
-                response.json({message:"success"})
-            }
-            else{
-                response.json({error:"failed"})
-            }
-        })}
-    catch (error) {
-        response.json(error);
-    }
-}
-export const repairDiscription = async (request, response) => {
-    try {
-       const {tokenID,discription}=request.body;
-       Repairs.findOneAndUpdate({tokenID:tokenID},{
-         $push:{repair_reason:discription},
-    },{
-        new:true
-    })
-        
-    .then(da=>{
-            if(da){
-                response.json({message:"success"})
-            }
-            else{
-                response.json({error:"failed"})
-            }
-        })}
     catch (error) {
         response.json(error);
     }

@@ -226,7 +226,6 @@ contract NFT_Digital_Warranty is ERC721URIStorage {
         _transfer(address(this), payable(ad), tokenId);
         //approve the marketplace to sell NFTs on your behalf
         approve(address(this), tokenId);
-        emit Approval(idToListedToken[tokenId].seller ,address(this) ,tokenId);
 
         
     }
