@@ -33,7 +33,7 @@ export default function SellNFT() {
   const ethers = require("ethers");
   const [message, updateMessage] = useState("");
   const location = useLocation();
-  var file;
+  const [file , setFile]  =  useState(null)
 
   async function connectWebsite() {
     const chainId = await window.ethereum.request({ method: "eth_chainId" });
@@ -70,7 +70,8 @@ export default function SellNFT() {
 
   //This function uploads the NFT image to IPFS
   async function OnChangeFile(e) {
-    file = e.target.files[0];
+    setFile(e.target.files[0]);
+
     //check for file extension
   }
 
@@ -78,6 +79,7 @@ export default function SellNFT() {
   async function uploadMetadataToIPFS() {
     const { name, description, serialno } = formParams;
     //Make sure that none of the fields are empty
+    
     if (!name || !description || !serialno || !fileURL) return;
 
     const nftJSON = {
@@ -87,6 +89,8 @@ export default function SellNFT() {
       image: fileURL,
       productID,
     };
+
+    console.log('hii' , nftJSON ) ;
 
     try {
       //upload the metadata JSON to IPFS
@@ -107,10 +111,13 @@ export default function SellNFT() {
     try {
       //upload the file to IPFS
       const response = await uploadFileToIPFS(file);
+      console.log('hii done ') ;
       if (response.success === true) {
         console.log("Uploaded image to Pinata: ", response.pinataURL);
+        console.log("Line Number: 117")
         setFileURL(response.pinataURL);
       }
+      // 
     } catch (e) {
       console.log("Error during file upload", e);
     }
@@ -119,10 +126,15 @@ export default function SellNFT() {
     try {
       console.log(fileURL);
       const metadataURL = await uploadMetadataToIPFS();
+      console.log('hii done 2  ') ;
+
       //After adding your Hardhat network to your metamask, this code will get providers and signers
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner();
       updateMessage("Please wait.. uploading (upto 5 mins)");
+
+      console.log('hii done 3 dm') ;
+
 
       //Pull the deployed contract instance
       let contract = new ethers.Contract(
@@ -131,6 +143,7 @@ export default function SellNFT() {
         signer
       );
 
+      window.contract = contract;
       //massage the params to be sent to the create NFT request
       // const serialno = ethers.utils.parseUnits(formParams.serialno, 'ether')
       // let listingPrice = await contract.getListPrice()
@@ -140,17 +153,27 @@ export default function SellNFT() {
 
       const { serialno } = formParams;
       //const { productID} = formParams;
+      console.log('hii pringting , ', metadataURL , serialno) ;
       let transaction = await contract.createToken(metadataURL, serialno, {
         value: "0",
       });
+
+      console.log('hii done 4 ') ;
+
       await transaction.wait();
+
+
+      // let tokenID = transaction
+      console.log('hii , done ' , transaction) ;
       //Pull the deployed contract instance
       //Get current token id
       //let productID=formParams.productID;
       let tokenID = await contract.getCurrentToken();
+      console.log('hii done 5' , tokenID) ;
       tokenID = tokenID.toNumber();
-      await postTokenID({ tokenID, productID });
-      const tokenURI = await contract.tokenURI(tokenID);
+      // await postTokenID({ transaction, productID });
+      console.log('hii done 6' , tokenID) ;
+      // const tokenURI = await contract.tokenURI(transaction);
 
       // console.log(serialno,tokenID,tokenURI,productID)
       // updateData({...data,tokenID});
@@ -162,7 +185,7 @@ export default function SellNFT() {
       updateFormParams({ name: "", description: "", serialno: "" });
       window.location.replace(`/addnft/${productID}`);
     } catch (e) {
-      alert("Upload error" + e);
+      alert("Upload error" + e.message);
     }
   }
 

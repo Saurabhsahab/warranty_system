@@ -14,7 +14,18 @@ const StyledButton = styled(Button)`
   width: 250px;
   height: 51px;
 `;
-
+let tokenID;
+async function callFunction(){
+  const ethers = require("ethers");
+  const provider = new ethers.providers.Web3Provider(window.ethereum);
+  const signer = provider.getSigner();
+  
+  let contract = new ethers.Contract(NFT_Digital_Warranty.address, NFT_Digital_Warranty.abi, signer)
+  
+  tokenID = await contract.getCurrentToken();
+  tokenID = tokenID.toNumber();
+  console.log('================================',tokenID)
+}
 export default function AddPro() {
   const [formParams, updateFormParams] = useState({
     product_name: "",
@@ -26,12 +37,17 @@ export default function AddPro() {
   const [product_image, setproduct_image] = useState("");
   var file;
   const location = useLocation();
+
+  callFunction();
+  // const addr = await signer.getAddress();
+
   useEffect(() => {
     if (product_image) {
       // console.log(formParams)
       const { product_name, discription, price, productID, expiry } =
         formParams;
       postProductDetails({
+        tokenID,
         product_name,
         discription,
         price,

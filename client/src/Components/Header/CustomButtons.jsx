@@ -49,6 +49,8 @@ const LoginButton = styled(Button)(({ theme }) => ({
   fontWeight: 600,
   borderRadius: 2,
   padding: "5px 30px",
+  marginLeft: "10px !important",
+  marginTop: "4px !important",
   height: 40,
   boxShadow: "none",
   margin: "0",

@@ -72,7 +72,7 @@ function doit(){
     
 }
       
-const MultiSlide = ({ data }) => {
+const MultiSlide = ({ data, title }) => {
     const timerURL = 'https://static-assets-web.flixcart.com/www/linchpin/fk-cp-zion/img/timer_a73398.svg';
 
     const renderer = ({ hours, minutes, seconds }) => {
@@ -82,7 +82,7 @@ const MultiSlide = ({ data }) => {
     return (
         <Component>
             <Deal>
-                <DealText>Deal of the day</DealText>
+                <DealText>{title}</DealText>
                 
                      <Timer>
                                 <img src={timerURL} style={{ width: 24 }} alt='time clock' />
@@ -109,7 +109,7 @@ const MultiSlide = ({ data }) => {
             >
             {/* {console.log(data.filter(temp => temp.tokenID?.length > 0).length)} */}
                 {
-                    data.map(temp => (
+                    data.filter(temp => temp.tokenID > 0).map(temp => (
                         true && (
                         <Link to={`product/${temp._id}`} style={{textDecoration: 'none'}}>
                             <Box textAlign="center" style={{ padding: '25px 15px' }}>
@@ -127,11 +127,11 @@ const MultiSlide = ({ data }) => {
     )
 }
 
-const Slide = ({data}) => {
+const Slide = ({data, title}) => {
     return (
         <>
             {
-                <MultiSlide data= {data} />
+                <MultiSlide data= {data} title={title}/>
             }
         </>
     )

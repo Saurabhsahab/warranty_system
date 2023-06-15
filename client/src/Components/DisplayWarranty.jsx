@@ -20,7 +20,7 @@ const DisplayWarranty = () => {
 
         //Pull the deployed contract instance
         let contract = new ethers.Contract(NFT_Digital_Warranty.address, NFT_Digital_Warranty.abi, signer)
-
+        
         //create an NFT Token
         let nft =  await contract.executeSale(tokenId,50,{value:'0'});
 

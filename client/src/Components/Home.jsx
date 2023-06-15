@@ -29,8 +29,9 @@ const Home = () => {
         const fetch  = async () => {
             console.log("Line 30!")
             let {data}  = await axios.get("http://localhost:8000/products");
+            console.log("Line Number: 32", data);
             setproducts(data);
-            console.log(products,"Line 33!");
+            console.log(products,"Line 34!");
         }
         fetch();
     }, [])

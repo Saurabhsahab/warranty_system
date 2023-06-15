@@ -40,7 +40,6 @@ const DetailView = () => {
         console.log("Line 40! DetailedView.jsx", id)
         const find  = async ()=>{
             let ans= await getProductById(id);
-            ans.tokenID = ['1234567890'];
            console.log("Line 42! DetailedView.jsx", ans)
             setrep(ans);
             // console.log(ans);

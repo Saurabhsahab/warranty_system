@@ -51,19 +51,20 @@ const ActionItem = ({ product}) => {
   
         //Pull the deployed contract instance
         let contract = new ethers.Contract(NFT_Digital_Warranty.address, NFT_Digital_Warranty.abi, signer)
-          
+        console.log("Line number: 54", contract)
+        console.log("Line number: 54", product)
         //create an NFT Token
           await contract.executeSale(product.id,product.expiry,{value:'0'}).then(
             async(da)=>{
                 console.log(da)
                 const tokenURI = await contract.tokenURI(product.id);
-          let meta = await axios.get(tokenURI);
-          //console.log(meta)
-               await delTokenID({productID:product.productID,tokenID:product.id,email:emails.email,url:meta.data.image,nftname:meta.data.name,nftdisc:meta.data.description,serialno:meta.data.serialno,time:(new Date().toISOString().slice(0, 10))});
+                let meta = await axios.get(tokenURI);
+                console.log("tokenURI: ", tokenURI, "meta: ", meta)
+            //    await delTokenID({productID:product.productID,tokenID:product.id,email:emails.email,url:meta.data.image,nftname:meta.data.name,nftdisc:meta.data.description,serialno:meta.data.serialno,time:(new Date().toISOString().slice(0, 10))});
                
             }
         )
-
+        console.log("Line number: 66", contract)
             
             window.location.replace('/myorders');
         }

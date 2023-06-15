@@ -26,7 +26,7 @@ module.exports = {
       //accounts: [process.env.privateKey]
     },
     goerli: {
-      url: "https://eth-goerli.g.alchemy.com/v2/PjsP4oc7KPFCxc388IEhCOAoL7TqeFma",
+      url: "https://eth-sepolia.g.alchemy.com/v2/yq6rdv7mzIaz45WWD7q28Jv2IYbF2z7H",
       accounts:["bda920fec40192088a8e0c80a1063f5e5d4736ebf420a8c89a89e1bd5902424b"]
     }
   },

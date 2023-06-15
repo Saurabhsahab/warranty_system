@@ -17,7 +17,6 @@ export const getProducts = async (request, response) => {
 
 export const getProductById = async (request, response) => {
     try {
-        console.log('Hie')
         console.log(request.params.id )
         const products = await Product.findOne({ '_id': request.params.id });
         //console.log(products)
@@ -103,17 +102,26 @@ sgMail
     }
 }
 
+function getRandomLargeInteger() {
+    const min = 1;
+    const max = Number.MAX_SAFE_INTEGER;
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 export const postProduct = async (request, response) => {
     try {
-        console.log(request.body)
         Product.findOne({productID:request.body.productID})
         .then(user=>{
             if(user){
                return response.json({message:"Already Listed"})
             }
         })
-          const product=new Product({
-            productID:request.body.productID,
+
+        // const tokenID = [getRandomLargeInteger()];
+        const tokenID = request.body.tokenID;
+        const product=new Product({
+               tokenID:tokenID,
+               productID:request.body.productID,
                product_name:request.body.product_name,
                price:request.body.price,
                product_image:request.body.product_image,
